@@ -223,6 +223,178 @@
     border-color: rgb(var(--glass-border-strong));
   }
 
+  /* ============================================================
+     3D Pro-Max Button System
+     Layered shadows + gloss + press depth. Mono palette safe.
+     ============================================================ */
+  .btn-3d {
+     @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold select-none;
+     background: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(0 0% 86%) 100%);
+     color: hsl(0 0% 6%);
+     border: 1px solid hsl(0 0% 100% / 0.6);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.9),
+       inset 0 -2px 0 hsl(0 0% 0% / 0.18),
+       0 1px 0 hsl(0 0% 100% / 0.05),
+       0 4px 0 hsl(0 0% 0% / 0.55),
+       0 10px 24px -6px hsl(0 0% 0% / 0.7);
+     transition: transform 140ms var(--ease-out-expo), box-shadow 180ms var(--ease-out-expo), filter 180ms;
+     will-change: transform, box-shadow;
+  }
+  .btn-3d::before {
+     content: "";
+     position: absolute; inset: 1px 1px auto 1px; height: 45%;
+     border-radius: 0.65rem 0.65rem 0 0;
+     background: linear-gradient(180deg, hsl(0 0% 100% / 0.85), hsl(0 0% 100% / 0));
+     pointer-events: none;
+  }
+  .btn-3d:hover {
+     transform: translateY(-1px);
+     filter: brightness(1.04);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.95),
+       inset 0 -2px 0 hsl(0 0% 0% / 0.2),
+       0 1px 0 hsl(0 0% 100% / 0.06),
+       0 5px 0 hsl(0 0% 0% / 0.6),
+       0 14px 28px -6px hsl(0 0% 0% / 0.8);
+  }
+  .btn-3d:active {
+     transform: translateY(2px);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.7),
+       inset 0 -1px 0 hsl(0 0% 0% / 0.1),
+       0 1px 0 hsl(0 0% 0% / 0.4),
+       0 4px 10px -4px hsl(0 0% 0% / 0.6);
+  }
+
+  .btn-3d-dark {
+     @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold select-none;
+     background: linear-gradient(180deg, hsl(0 0% 18%) 0%, hsl(0 0% 8%) 100%);
+     color: hsl(0 0% 98%);
+     border: 1px solid hsl(0 0% 100% / 0.10);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.10),
+       inset 0 -2px 0 hsl(0 0% 0% / 0.55),
+       0 1px 0 hsl(0 0% 100% / 0.04),
+       0 4px 0 hsl(0 0% 0% / 0.6),
+       0 10px 24px -8px hsl(0 0% 0% / 0.7);
+     transition: transform 140ms var(--ease-out-expo), box-shadow 180ms var(--ease-out-expo), filter 180ms;
+  }
+  .btn-3d-dark::before {
+     content: "";
+     position: absolute; inset: 1px 1px auto 1px; height: 45%;
+     border-radius: 0.65rem 0.65rem 0 0;
+     background: linear-gradient(180deg, hsl(0 0% 100% / 0.10), hsl(0 0% 100% / 0));
+     pointer-events: none;
+  }
+  .btn-3d-dark:hover { transform: translateY(-1px); filter: brightness(1.12); }
+  .btn-3d-dark:active { transform: translateY(2px); }
+
+  /* Compact 3D icon button */
+  .btn-3d-icon {
+     @apply relative inline-grid place-items-center rounded-xl select-none;
+     width: 2.25rem; height: 2.25rem;
+     background: linear-gradient(180deg, hsl(0 0% 16%) 0%, hsl(0 0% 7%) 100%);
+     color: hsl(0 0% 96%);
+     border: 1px solid hsl(0 0% 100% / 0.10);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.12),
+       inset 0 -1.5px 0 hsl(0 0% 0% / 0.55),
+       0 3px 0 hsl(0 0% 0% / 0.55),
+       0 8px 18px -6px hsl(0 0% 0% / 0.65);
+     transition: transform 140ms var(--ease-out-expo), filter 180ms, box-shadow 180ms;
+  }
+  .btn-3d-icon::before {
+     content: ""; position: absolute; inset: 1px 1px auto 1px; height: 50%;
+     border-radius: 0.65rem 0.65rem 0 0;
+     background: linear-gradient(180deg, hsl(0 0% 100% / 0.12), hsl(0 0% 100% / 0));
+     pointer-events: none;
+  }
+  .btn-3d-icon:hover { transform: translateY(-1px); filter: brightness(1.18); }
+  .btn-3d-icon:active { transform: translateY(1px); }
+
+  /* ============================================================
+     3D Icon Tile — premium beveled icon container
+     ============================================================ */
+  .icon-tile-3d {
+     position: relative;
+     border-radius: 0.85rem;
+     background: linear-gradient(160deg, hsl(0 0% 22%) 0%, hsl(0 0% 8%) 65%, hsl(0 0% 4%) 100%);
+     border: 1px solid hsl(0 0% 100% / 0.10);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.18),
+       inset 0 -1.5px 0 hsl(0 0% 0% / 0.6),
+       inset 0 0 0 1px hsl(0 0% 0% / 0.4),
+       0 6px 14px -4px hsl(0 0% 0% / 0.6),
+       0 14px 30px -10px hsl(0 0% 0% / 0.7);
+     transition: transform 250ms var(--ease-out-expo), box-shadow 250ms, filter 250ms;
+  }
+  .icon-tile-3d::before {
+     content: ""; position: absolute; inset: 1px 1px auto 1px; height: 55%;
+     border-radius: 0.78rem 0.78rem 40% 40% / 0.78rem 0.78rem 60% 60%;
+     background: linear-gradient(180deg, hsl(0 0% 100% / 0.16), hsl(0 0% 100% / 0));
+     pointer-events: none;
+  }
+  .icon-tile-3d::after {
+     content: ""; position: absolute; inset: auto 14% 6% 14%; height: 6px;
+     border-radius: 50%;
+     background: hsl(0 0% 100% / 0.06);
+     filter: blur(3px);
+     pointer-events: none;
+  }
+  .group:hover .icon-tile-3d {
+     transform: translateY(-2px) rotate(-1deg);
+     filter: brightness(1.15);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.28),
+       inset 0 -1.5px 0 hsl(0 0% 0% / 0.6),
+       inset 0 0 0 1px hsl(0 0% 0% / 0.4),
+       0 10px 22px -4px hsl(0 0% 0% / 0.75),
+       0 22px 40px -12px hsl(0 0% 0% / 0.85);
+  }
+
+  .icon-tile-3d-light {
+     position: relative;
+     border-radius: 0.85rem;
+     background: linear-gradient(160deg, hsl(0 0% 100%) 0%, hsl(0 0% 88%) 60%, hsl(0 0% 78%) 100%);
+     border: 1px solid hsl(0 0% 100% / 0.7);
+     color: hsl(0 0% 6%);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100%),
+       inset 0 -2px 0 hsl(0 0% 0% / 0.18),
+       0 8px 18px -4px hsl(0 0% 0% / 0.6),
+       0 16px 32px -10px hsl(0 0% 0% / 0.7);
+  }
+  .icon-tile-3d-light::before {
+     content: ""; position: absolute; inset: 1px 1px auto 1px; height: 55%;
+     border-radius: 0.78rem 0.78rem 40% 40% / 0.78rem 0.78rem 60% 60%;
+     background: linear-gradient(180deg, hsl(0 0% 100% / 0.95), hsl(0 0% 100% / 0));
+     pointer-events: none;
+  }
+
+  /* Tactile pressable card */
+  .card-3d {
+     position: relative;
+     border-radius: 0.85rem;
+     background: linear-gradient(180deg, hsl(0 0% 9%) 0%, hsl(0 0% 5%) 100%);
+     border: 1px solid hsl(0 0% 100% / 0.08);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.06),
+       inset 0 -1px 0 hsl(0 0% 0% / 0.4),
+       0 2px 0 hsl(0 0% 0% / 0.5),
+       0 12px 28px -10px hsl(0 0% 0% / 0.65);
+     transition: transform 280ms var(--ease-out-expo), box-shadow 280ms, border-color 280ms;
+  }
+  .card-3d:hover {
+     transform: translateY(-3px);
+     border-color: hsl(0 0% 100% / 0.18);
+     box-shadow:
+       inset 0 1px 0 hsl(0 0% 100% / 0.10),
+       inset 0 -1px 0 hsl(0 0% 0% / 0.5),
+       0 4px 0 hsl(0 0% 0% / 0.55),
+       0 22px 44px -10px hsl(0 0% 0% / 0.85);
+  }
+
   /* --- Card hover --- */
   .card-hover {
     transition: transform var(--dur-std) var(--ease-out-expo),

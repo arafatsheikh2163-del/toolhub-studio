@@ -100,28 +100,28 @@ export function Topbar() {
       {/* Right actions */}
       <button
         onClick={toggleTheme}
-        className="relative h-9 w-9 grid place-items-center rounded-md glass-alt hover:bg-white/[0.08] transition-colors focus-ring"
+        className="btn-3d-icon focus-ring"
         aria-label="Toggle theme"
         title="Theme"
       >
-        {dark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+        {dark ? <Moon className="h-4 w-4 relative z-10" /> : <Sun className="h-4 w-4 relative z-10" />}
       </button>
 
       <button
-        className="relative h-9 w-9 grid place-items-center rounded-md glass-alt hover:bg-white/[0.08] transition-colors focus-ring"
+        className="btn-3d-icon focus-ring"
         aria-label="Notifications"
         title="Notifications"
       >
-        <Bell className="h-4 w-4" />
-        <span className="absolute top-2 right-2.5 h-1.5 w-1.5 rounded-full bg-foreground animate-glow-pulse" />
+        <Bell className="h-4 w-4 relative z-10" />
+        <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-foreground animate-glow-pulse z-10" />
       </button>
 
       <button
-        className="h-9 w-9 rounded-md bg-foreground text-background grid place-items-center text-xs font-mono font-bold focus-ring"
+        className="relative h-9 w-9 grid place-items-center rounded-xl text-xs font-mono font-bold focus-ring icon-tile-3d-light"
         title="Account"
         aria-label="Account"
       >
-        TH
+        <span className="relative z-10">TH</span>
       </button>
     </header>
   );

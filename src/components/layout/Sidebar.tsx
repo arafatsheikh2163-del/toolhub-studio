@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Home, Type, Image as ImageIcon, Code2, FileText, LayoutGrid, ChevronLeft, Sparkles, Star } from "lucide-react";
+import { Home, Type, Image as ImageIcon, Code2, FileText, LayoutGrid, ChevronLeft, Wrench, ArrowLeftRight, Sparkles, ShieldCheck, Palette } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { TOOLS, type ToolCategory } from "@/data/tools";
 import { useFavorites } from "@/hooks/useFavorites";
@@ -16,6 +16,11 @@ const SECTIONS: Array<{ key: ToolCategory | "dashboard" | "favorites"; label: st
   { key: "image",     label: "Image Tools", icon: ImageIcon },
   { key: "developer", label: "Developer",   icon: Code2 },
   { key: "pdf",       label: "PDF Tools",   icon: FileText },
+  { key: "utility",   label: "Utilities",   icon: Wrench },
+  { key: "converter", label: "Converters",  icon: ArrowLeftRight },
+  { key: "generator", label: "Generators",  icon: Sparkles },
+  { key: "security",  label: "Security",    icon: ShieldCheck },
+  { key: "creative",  label: "Creative Lab", icon: Palette },
 ];
 
 export function Sidebar({ collapsed, onToggle }: Props) {
