@@ -1,0 +1,144 @@
+import { NavLink, useLocation } from "react-router-dom";
+import { Home, Type, Image as ImageIcon, Code2, FileText, LayoutGrid, ChevronLeft, Sparkles, Star } from "lucide-react";
+import { TOOLS, type ToolCategory } from "@/data/tools";
+import { useFavorites } from "@/hooks/useFavorites";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  collapsed: boolean;
+  onToggle: () => void;
+}
+
+const SECTIONS: Array<{ key: ToolCategory | "dashboard" | "favorites"; label: string; icon: React.ComponentType<{ className?: string }>; path?: string; }> = [
+  { key: "dashboard", label: "Dashboard",   icon: Home,       path: "/" },
+  { key: "text",      label: "Text Tools",  icon: Type },
+  { key: "image",     label: "Image Tools", icon: ImageIcon },
+  { key: "developer", label: "Developer",   icon: Code2 },
+  { key: "pdf",       label: "PDF Tools",   icon: FileText },
+];
+
+export function Sidebar({ collapsed, onToggle }: Props) {
+  const { pathname } = useLocation();
+  const { favorites } = useFavorites();
+  const favTools = TOOLS.filter(t => favorites.includes(t.id));
+
+  return (
+    <aside
+      className={cn(
+        "relative z-20 flex flex-col glass border-r border-white/[0.06] transition-[width] duration-300 ease-out-expo",
+        collapsed ? "w-[72px]" : "w-[260px]"
+      )}
+      style={{ backdropFilter: "blur(28px) saturate(160%)" }}
+    >
+      {/* Brand */}
+      <div className="flex items-center gap-3 px-4 h-16 border-b border-white/[0.06]">
+        <div className="relative h-9 w-9 rounded-xl bg-gradient-brand grid place-items-center shadow-glow-cyan">
+          <Sparkles className="h-4.5 w-4.5 text-white" strokeWidth={2.25} />
+        </div>
+        {!collapsed && (
+          <div className="min-w-0 animate-fade-in">
+            <div className="text-sm font-semibold text-foreground tracking-tight">ToolHub <span className="text-gradient-brand">Ultra</span></div>
+            <div className="text-[11px] text-muted-foreground -mt-0.5">v1.0 · Client-side</div>
+          </div>
+        )}
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto px-2 py-4 space-y-6">
+        <div>
+          {!collapsed && <div className="px-3 mb-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Workspace</div>}
+          <ul className="space-y-0.5">
+            {SECTIONS.map(s => {
+              const Icon = s.icon;
+              const path = s.path ?? `/category/${s.key}`;
+              const active = pathname === path || (s.path === "/" && pathname === "/");
+              return (
+                <li key={s.key}>
+                  <NavLink
+                    to={path}
+                    end={path === "/"}
+                    title={collapsed ? s.label : undefined}
+                    className={({ isActive }) => cn(
+                      "group relative flex items-center gap-3 rounded-xl px-3 h-10 text-sm text-muted-foreground hover:text-foreground hover:bg-white/[0.04] transition-colors",
+                      (isActive || active) && "sidebar-active"
+                    )}
+                  >
+                    <Icon className="h-4.5 w-4.5 shrink-0" strokeWidth={1.75} />
+                    {!collapsed && <span className="truncate">{s.label}</span>}
+                  </NavLink>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        {/* Flagship */}
+        <div>
+          {!collapsed && <div className="px-3 mb-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Flagship</div>}
+          <NavLink
+            to="/tools/multi-tab"
+            title={collapsed ? "Multi-tab Viewer" : undefined}
+            className={({ isActive }) => cn(
+              "group relative flex items-center gap-3 rounded-xl px-3 h-11 text-sm transition-all",
+              "border border-white/[0.06] bg-gradient-brand-soft text-foreground",
+              "hover:border-white/15 hover:shadow-glow-cyan",
+              isActive && "ring-1 ring-primary/40"
+            )}
+          >
+            <LayoutGrid className="h-4.5 w-4.5 shrink-0 text-primary" strokeWidth={2} />
+            {!collapsed && (
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium leading-none">Multi-tab Viewer</div>
+                <div className="text-[10.5px] text-muted-foreground mt-1">Compare sites live</div>
+              </div>
+            )}
+            {!collapsed && <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-primary/15 text-primary">NEW</span>}
+          </NavLink>
+        </div>
+
+        {/* Favorites */}
+        {favTools.length > 0 && (
+          <div>
+            {!collapsed && (
+              <div className="px-3 mb-1 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground flex items-center gap-1.5">
+                <Star className="h-3 w-3" /> Favorites
+              </div>
+            )}
+            <ul className="space-y-0.5">
+              {favTools.map(t => {
+                const Icon = t.icon;
+                return (
+                  <li key={t.id}>
+                    <NavLink
+                      to={t.path}
+                      title={collapsed ? t.name : undefined}
+                      className={({ isActive }) => cn(
+                        "group flex items-center gap-3 rounded-xl px-3 h-9 text-sm text-muted-foreground hover:text-foreground hover:bg-white/[0.04]",
+                        isActive && "sidebar-active"
+                      )}
+                    >
+                      <Icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                      {!collapsed && <span className="truncate">{t.name}</span>}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+      </nav>
+
+      {/* Collapse toggle */}
+      <div className="p-3 border-t border-white/[0.06]">
+        <button
+          onClick={onToggle}
+          className="w-full flex items-center justify-center gap-2 h-9 rounded-xl text-xs text-muted-foreground hover:text-foreground hover:bg-white/[0.04] transition-colors"
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <ChevronLeft className={cn("h-4 w-4 transition-transform duration-300", collapsed && "rotate-180")} />
+          {!collapsed && <span>Collapse</span>}
+        </button>
+      </div>
+    </aside>
+  );
+}
