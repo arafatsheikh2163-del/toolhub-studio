@@ -46,8 +46,8 @@ export function Topbar() {
       {/* Search */}
       <div className="relative flex-1 max-w-xl">
         <div className={cn(
-          "flex items-center h-10 rounded-full recess px-4 gap-3 transition-all duration-250 ease-out-expo",
-          open && "ring-1 ring-primary/50 border-primary/40"
+          "flex items-center h-10 rounded-md recess px-4 gap-3 transition-all duration-250 ease-out-expo",
+          open && "ring-1 ring-white/40 border-white/30"
         )}>
           <Search className="h-4 w-4 text-muted-foreground" />
           <input
@@ -59,13 +59,13 @@ export function Topbar() {
             placeholder="Search tools…"
             className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground/70"
           />
-          <kbd className="hidden md:inline-flex items-center gap-1 text-[10px] text-muted-foreground font-mono px-1.5 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06]">
+          <kbd className="hidden md:inline-flex items-center gap-1 text-[10px] text-muted-foreground font-mono px-1.5 py-0.5 rounded-sm bg-white/[0.04] border border-white/[0.10]">
             <Command className="h-2.5 w-2.5" />K
           </kbd>
         </div>
 
         {open && q.trim() && (
-          <div className="absolute left-0 right-0 mt-2 glass-strong rounded-2xl p-1.5 shadow-elev-lg animate-fade-in z-50">
+          <div className="absolute left-0 right-0 mt-2 glass-strong rounded-lg p-1.5 shadow-elev-lg animate-fade-in z-50">
             {results.length === 0 ? (
               <div className="text-xs text-muted-foreground px-3 py-3">No tools match "{q}"</div>
             ) : (
@@ -76,10 +76,10 @@ export function Topbar() {
                     <li key={t.id}>
                       <button
                         onMouseDown={(e) => { e.preventDefault(); navigate(t.path); setQ(""); setOpen(false); }}
-                        className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left hover:bg-white/[0.05] transition-colors"
+                        className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-left hover:bg-white/[0.05] transition-colors"
                       >
-                        <div className="h-8 w-8 grid place-items-center rounded-lg bg-white/[0.04] border border-white/[0.06]">
-                          <Icon className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                        <div className="h-8 w-8 grid place-items-center rounded-md bg-white/[0.04] border border-white/[0.10]">
+                          <Icon className="h-4 w-4 text-foreground" strokeWidth={1.75} />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-medium truncate">{t.name}</div>
@@ -100,7 +100,7 @@ export function Topbar() {
       {/* Right actions */}
       <button
         onClick={toggleTheme}
-        className="relative h-9 w-9 grid place-items-center rounded-full glass-alt hover:bg-white/[0.08] transition-colors focus-ring"
+        className="relative h-9 w-9 grid place-items-center rounded-md glass-alt hover:bg-white/[0.08] transition-colors focus-ring"
         aria-label="Toggle theme"
         title="Theme"
       >
@@ -108,16 +108,16 @@ export function Topbar() {
       </button>
 
       <button
-        className="relative h-9 w-9 grid place-items-center rounded-full glass-alt hover:bg-white/[0.08] transition-colors focus-ring"
+        className="relative h-9 w-9 grid place-items-center rounded-md glass-alt hover:bg-white/[0.08] transition-colors focus-ring"
         aria-label="Notifications"
         title="Notifications"
       >
         <Bell className="h-4 w-4" />
-        <span className="absolute top-2 right-2.5 h-1.5 w-1.5 rounded-full bg-primary animate-glow-pulse" />
+        <span className="absolute top-2 right-2.5 h-1.5 w-1.5 rounded-full bg-foreground animate-glow-pulse" />
       </button>
 
       <button
-        className="h-9 w-9 rounded-full bg-gradient-brand grid place-items-center text-xs font-semibold text-white shadow-glow-cyan focus-ring"
+        className="h-9 w-9 rounded-md bg-foreground text-background grid place-items-center text-xs font-mono font-bold focus-ring"
         title="Account"
         aria-label="Account"
       >
