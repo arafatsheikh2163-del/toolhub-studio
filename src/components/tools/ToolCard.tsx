@@ -17,7 +17,7 @@ export function ToolCard({ tool }: { tool: Tool }) {
     <Link
       to={tool.path}
       className={cn(
-        "group relative flex flex-col gap-4 p-5 rounded-lg glass card-hover overflow-hidden",
+        "group relative flex flex-col gap-4 p-5 card-3d overflow-hidden",
         tool.flagship && "ring-1 ring-white/30"
       )}
     >
@@ -26,8 +26,8 @@ export function ToolCard({ tool }: { tool: Tool }) {
       <div className="pointer-events-none absolute top-0 right-0 w-px h-12 bg-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="flex items-start justify-between">
-        <div className="h-11 w-11 rounded-md bg-white/[0.03] border border-white/[0.10] grid place-items-center group-hover:bg-foreground group-hover:border-foreground transition-all duration-250 ease-out-expo">
-          <Icon className="h-5 w-5 text-foreground group-hover:text-background transition-colors" strokeWidth={1.5} />
+        <div className={cn("h-12 w-12 grid place-items-center", tool.flagship ? "icon-tile-3d-light" : "icon-tile-3d")}>
+          <Icon className={cn("h-5 w-5 relative z-10", tool.flagship ? "text-background" : "text-foreground drop-shadow-[0_1px_0_rgba(0,0,0,0.6)]")} strokeWidth={1.75} />
         </div>
         <div className="flex items-center gap-1.5">
           {tool.flagship && (
