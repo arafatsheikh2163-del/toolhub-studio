@@ -9,7 +9,7 @@ interface Props {
   onToggle: () => void;
 }
 
-const SECTIONS: Array<{ key: ToolCategory | "dashboard" | "favorites"; label: string; icon: React.ComponentType<{ className?: string }>; path?: string; }> = [
+const SECTIONS: Array<{ key: ToolCategory | "dashboard" | "favorites"; label: string; icon: React.ComponentType<{ className?: string; strokeWidth?: number }>; path?: string; }> = [
   { key: "dashboard", label: "Dashboard",   icon: Home,       path: "/" },
   { key: "text",      label: "Text Tools",  icon: Type },
   { key: "image",     label: "Image Tools", icon: ImageIcon },
