@@ -36,43 +36,42 @@ export default function Dashboard() {
   return (
     <div className="space-y-10">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl glass p-8 sm:p-10">
+      <section className="relative overflow-hidden rounded-lg glass p-8 sm:p-12 border border-white/[0.10]">
         <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" />
-        <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-secondary/20 blur-3xl pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-foreground/30 to-transparent pointer-events-none" />
 
         <div className="relative flex flex-col gap-6">
-          <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
-            <Sparkles className="h-3 w-3 text-primary" /> Welcome back
+          <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.24em] text-muted-foreground">
+            <span className="inline-block h-px w-6 bg-foreground/40" /> Index № 001 — Welcome back
           </div>
-          <h1 className="text-3xl sm:text-5xl font-medium tracking-tight text-balance leading-[1.05]">
-            Your <span className="text-gradient-brand">precision toolkit</span><br className="hidden sm:block" /> for everything in the browser.
+          <h1 className="text-4xl sm:text-6xl font-medium tracking-[-0.04em] text-balance leading-[0.98]">
+            A <em className="not-italic underline decoration-foreground/30 underline-offset-[6px] decoration-1">precision</em> toolkit<br className="hidden sm:block" /> for everything in the browser.
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl text-pretty">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl text-pretty leading-relaxed">
             {TOOLS.length} client-side tools for text, images, developers, PDFs and live web previews.
             Nothing ever leaves your device.
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px mt-4 border border-white/[0.10] bg-white/[0.06] rounded-md overflow-hidden">
             {[
               { icon: Zap,     k: "Tools", v: TOOLS.length },
               { icon: Shield,  k: "Privacy", v: "100%" },
               { icon: Sparkles, k: "Saved",   v: favorites.length },
               { icon: Sparkles, k: "Latency", v: "0ms" },
             ].map((s, i) => (
-              <div key={i} className="rounded-xl glass-alt px-4 py-3">
-                <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">
-                  <s.icon className="h-3 w-3 text-primary" /> {s.k}
+              <div key={i} className="bg-background px-4 py-4">
+                <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                  <s.icon className="h-3 w-3 text-foreground" strokeWidth={1.75} /> {s.k}
                 </div>
-                <div className="text-xl font-medium tabular-nums mt-1">{s.v}</div>
+                <div className="text-2xl font-medium tabular-nums mt-1 tracking-tight">{s.v}</div>
               </div>
             ))}
           </div>
 
           {/* Search inside hero */}
           <div className="relative max-w-2xl">
-            <div className="flex items-center h-12 rounded-full recess px-5 gap-3 focus-within:ring-1 focus-within:ring-primary/50">
+            <div className="flex items-center h-12 rounded-md recess px-5 gap-3 focus-within:ring-1 focus-within:ring-white/40">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={q}
@@ -96,15 +95,15 @@ export default function Dashboard() {
               key={f.key}
               onClick={() => setFilter(f.key)}
               className={cn(
-                "btn-pill !py-1.5 !px-4 text-xs transition-all",
+                "btn-pill !rounded-md !py-1.5 !px-4 text-xs transition-all",
                 filter === f.key
-                  ? "bg-gradient-brand text-white shadow-glow-cyan"
+                  ? "bg-foreground text-background"
                   : "btn-secondary text-muted-foreground hover:text-foreground"
               )}
             >
               {f.label}
               {f.key !== "all" && f.key !== "favorites" && (
-                <span className="ml-1 text-[10px] font-mono opacity-70">
+                <span className="ml-1 text-[10px] font-mono opacity-60">
                   {TOOLS.filter(t => t.category === f.key).length}
                 </span>
               )}
@@ -132,15 +131,14 @@ export default function Dashboard() {
 
 function FlagshipPromo() {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-brand-soft p-6 sm:p-7">
-      <div className="absolute -right-10 -top-10 w-60 h-60 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+    <div className="relative overflow-hidden rounded-lg border border-white/[0.12] bg-foreground text-background p-6 sm:p-7">
       <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
         <div className="space-y-1.5 max-w-xl">
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary">Flagship · Multi-tab Viewer</div>
-          <h2 className="text-xl font-medium tracking-tight">Compare any sites side-by-side, live.</h2>
-          <p className="text-sm text-muted-foreground">Drop in URLs, switch grid layouts (1×1 → 4×4), drag to reorder, refresh individually.</p>
+          <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-background/60">— Flagship / Multi-tab Viewer</div>
+          <h2 className="text-2xl font-medium tracking-tight">Compare any sites side-by-side, live.</h2>
+          <p className="text-sm text-background/70">Drop in URLs, switch grid layouts (1×1 → 4×4), drag to reorder, refresh individually.</p>
         </div>
-        <a href="/tools/multi-tab" className="btn-pill btn-primary shrink-0">Open Viewer →</a>
+        <a href="/tools/multi-tab" className="btn-pill !rounded-md shrink-0 bg-background text-foreground hover:bg-background/90 px-4 py-2 font-medium">Open Viewer →</a>
       </div>
     </div>
   );
@@ -148,8 +146,8 @@ function FlagshipPromo() {
 
 function EmptyState({ query, filter }: { query: string; filter: string }) {
   return (
-    <div className="rounded-2xl glass p-10 text-center">
-      <div className="mx-auto h-12 w-12 rounded-2xl bg-white/[0.04] border border-white/[0.08] grid place-items-center mb-3">
+    <div className="rounded-lg glass p-10 text-center">
+      <div className="mx-auto h-12 w-12 rounded-md bg-white/[0.04] border border-white/[0.10] grid place-items-center mb-3">
         <Search className="h-5 w-5 text-muted-foreground" />
       </div>
       <div className="text-sm font-medium">No tools found</div>
