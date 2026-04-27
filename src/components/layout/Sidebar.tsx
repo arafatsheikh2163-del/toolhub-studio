@@ -60,7 +60,7 @@ export function Sidebar({ collapsed, onToggle }: Props) {
                     end={path === "/"}
                     title={collapsed ? s.label : undefined}
                     className={({ isActive }) => cn(
-                      "group relative flex items-center gap-3 rounded-xl px-3 h-10 text-sm text-muted-foreground hover:text-foreground hover:bg-white/[0.04] transition-colors",
+                      "group relative flex items-center gap-3 rounded-md px-3 h-10 text-sm text-muted-foreground hover:text-foreground hover:bg-white/[0.04] transition-colors",
                       (isActive || active) && "sidebar-active"
                     )}
                   >
