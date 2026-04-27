@@ -1,5 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { Home, Type, Image as ImageIcon, Code2, FileText, LayoutGrid, ChevronLeft, Sparkles, Star } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { TOOLS, type ToolCategory } from "@/data/tools";
 import { useFavorites } from "@/hooks/useFavorites";
 import { cn } from "@/lib/utils";
@@ -9,7 +10,7 @@ interface Props {
   onToggle: () => void;
 }
 
-const SECTIONS: Array<{ key: ToolCategory | "dashboard" | "favorites"; label: string; icon: React.ComponentType<{ className?: string; strokeWidth?: number }>; path?: string; }> = [
+const SECTIONS: Array<{ key: ToolCategory | "dashboard" | "favorites"; label: string; icon: LucideIcon; path?: string; }> = [
   { key: "dashboard", label: "Dashboard",   icon: Home,       path: "/" },
   { key: "text",      label: "Text Tools",  icon: Type },
   { key: "image",     label: "Image Tools", icon: ImageIcon },
