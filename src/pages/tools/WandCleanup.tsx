@@ -11,8 +11,8 @@ export default function WandCleanup() {
   const [b, setB] = useState(10); // brightness adjust %
   const [c, setC] = useState(15); // contrast adjust %
 
-  const onFiles = (files: File[]) => {
-    const f = files[0]; if (!f) return;
+  const onFile = (f: File) => {
+    
     const url = URL.createObjectURL(f);
     setSrc(url);
     process(url, b, c);
@@ -36,7 +36,7 @@ export default function WandCleanup() {
   return (
     <ToolWorkspace toolId="wand-cleanup" actions={out?
       <button onClick={()=>fetch(out).then(r=>r.blob()).then(b=>downloadBlob(b,"cleaned.jpg"))} className="btn-3d-dark text-xs !px-3.5 !py-1.5"><Download className="h-3.5 w-3.5 relative z-10" /><span className="relative z-10">Download</span></button>:null}>
-      {!src ? <Dropzone onFiles={onFiles} accept="image/*" /> : (
+      {!src ? <Dropzone onFile={onFile} accept="image/*" /> : (
         <div className="space-y-4">
           <div className="grid md:grid-cols-2 gap-3">
             <Field label={`Brightness +${b}%`}><input type="range" min={-50} max={50} value={b} onChange={e=>reapply(+e.target.value,c)} className="w-full accent-white" /></Field>

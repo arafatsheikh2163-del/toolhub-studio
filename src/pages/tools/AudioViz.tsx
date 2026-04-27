@@ -38,11 +38,11 @@ export default function AudioViz() {
     a.play();
   };
 
-  const onFiles = (files: File[]) => { const f = files[0]; if (f) setSrc(URL.createObjectURL(f)); };
+  const onFile = (f: File) => { if (f) setSrc(URL.createObjectURL(f)); };
 
   return (
     <ToolWorkspace toolId="audio-viz">
-      {!src ? <Dropzone onFiles={onFiles} accept="audio/*" /> : (
+      {!src ? <Dropzone onFile={onFile} accept="audio/*" /> : (
         <div className="space-y-3">
           <canvas ref={canvasRef} width={800} height={240} className="w-full rounded-lg border border-white/10 bg-black" />
           <audio ref={audioRef} src={src} controls className="w-full" onPlay={start} />

@@ -10,8 +10,8 @@ export default function ImageAscii() {
   const [out, setOut] = useState("");
   const [width, setWidth] = useState(100);
 
-  const onFiles = async (files: File[]) => {
-    const f = files[0]; if (!f) return;
+  const onFile = async (f: File) => {
+    
     const url = URL.createObjectURL(f);
     const img = new Image();
     img.onload = () => {
@@ -40,7 +40,7 @@ export default function ImageAscii() {
       <Field label={`Width: ${width} chars`}>
         <input type="range" min={40} max={200} value={width} onChange={e=>setWidth(+e.target.value)} className="w-full accent-white" />
       </Field>
-      <div className="mt-3"><Dropzone onFiles={onFiles} accept="image/*" /></div>
+      <div className="mt-3"><Dropzone onFile={onFile} accept="image/*" /></div>
       {out && <pre className="mt-4 rounded-lg recess p-3 text-[7px] sm:text-[8px] leading-[1] font-mono whitespace-pre overflow-auto max-h-[600px]">{out}</pre>}
     </ToolWorkspace>
   );

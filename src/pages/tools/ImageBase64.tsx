@@ -8,15 +8,15 @@ import { formatBytes } from "@/lib/format";
 export default function ImageBase64() {
   const [data, setData] = useState("");
   const [meta, setMeta] = useState<{name:string,size:number,type:string}|null>(null);
-  const onFiles = (files: File[]) => {
-    const f = files[0]; if (!f) return;
+  const onFile = (f: File) => {
+    
     const r = new FileReader();
     r.onload = () => { setData(String(r.result||"")); setMeta({name:f.name,size:f.size,type:f.type}); };
     r.readAsDataURL(f);
   };
   return (
     <ToolWorkspace toolId="image-base64" actions={data?<CopyButton text={data} label="Copy data URI" />:null}>
-      {!data ? <Dropzone onFiles={onFiles} accept="image/*" /> : (
+      {!data ? <Dropzone onFile={onFile} accept="image/*" /> : (
         <div className="space-y-4">
           <div className="grid md:grid-cols-[200px_1fr] gap-4">
             <img src={data} alt="" className="rounded-md border border-white/10 max-h-[200px] object-contain bg-black/30" />
