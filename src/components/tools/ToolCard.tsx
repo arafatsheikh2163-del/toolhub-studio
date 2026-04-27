@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const CAT_LABEL: Record<Tool["category"], string> = {
   text: "Text", image: "Image", developer: "Dev", pdf: "PDF", viewer: "Viewer",
+  utility: "Util", converter: "Conv", generator: "Gen", security: "Sec", creative: "Lab",
 };
 
 export function ToolCard({ tool }: { tool: Tool }) {
