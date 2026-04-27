@@ -17,29 +17,30 @@ export function ToolCard({ tool }: { tool: Tool }) {
     <Link
       to={tool.path}
       className={cn(
-        "group relative flex flex-col gap-4 p-5 rounded-2xl glass card-hover overflow-hidden",
-        tool.flagship && "ring-1 ring-primary/30 bg-gradient-brand-soft"
+        "group relative flex flex-col gap-4 p-5 rounded-lg glass card-hover overflow-hidden",
+        tool.flagship && "ring-1 ring-white/30"
       )}
     >
-      {/* Decorative ambient sheen */}
-      <div className="pointer-events-none absolute -top-20 -right-16 w-40 h-40 rounded-full bg-primary/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      {/* Hairline corner accent */}
+      <div className="pointer-events-none absolute top-0 right-0 h-px w-12 bg-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="pointer-events-none absolute top-0 right-0 w-px h-12 bg-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="flex items-start justify-between">
-        <div className="h-11 w-11 rounded-xl bg-white/[0.04] border border-white/[0.08] grid place-items-center group-hover:bg-gradient-brand group-hover:border-transparent transition-all duration-250 ease-out-expo">
-          <Icon className="h-5 w-5 text-primary group-hover:text-white transition-colors" strokeWidth={1.75} />
+        <div className="h-11 w-11 rounded-md bg-white/[0.03] border border-white/[0.10] grid place-items-center group-hover:bg-foreground group-hover:border-foreground transition-all duration-250 ease-out-expo">
+          <Icon className="h-5 w-5 text-foreground group-hover:text-background transition-colors" strokeWidth={1.5} />
         </div>
         <div className="flex items-center gap-1.5">
           {tool.flagship && (
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/30">FLAGSHIP</span>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-sm bg-foreground text-background font-semibold tracking-wider">FLAGSHIP</span>
           )}
-          <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">{CAT_LABEL[tool.category]}</span>
+          <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-muted-foreground">/{CAT_LABEL[tool.category]}</span>
           <button
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(tool.id); }}
-            className="h-7 w-7 grid place-items-center rounded-full hover:bg-white/[0.06] transition-colors"
+            className="h-7 w-7 grid place-items-center rounded-md hover:bg-white/[0.06] transition-colors"
             aria-label={fav ? "Unfavorite" : "Favorite"}
             title={fav ? "Unfavorite" : "Favorite"}
           >
-            <Star className={cn("h-3.5 w-3.5 transition-colors", fav ? "fill-primary text-primary" : "text-muted-foreground")} />
+            <Star className={cn("h-3.5 w-3.5 transition-colors", fav ? "fill-foreground text-foreground" : "text-muted-foreground")} />
           </button>
         </div>
       </div>
