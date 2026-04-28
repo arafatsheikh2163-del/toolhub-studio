@@ -22,8 +22,8 @@ export default function Encrypt() {
 
   async function encrypt() {
     if (!pwd || !text) return toast.error("Need text and password");
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const salt = crypto.getRandomValues(new Uint8Array(16)) as Uint8Array<ArrayBuffer>;
+    const iv = crypto.getRandomValues(new Uint8Array(12)) as Uint8Array<ArrayBuffer>;
     const key = await deriveKey(pwd, salt);
     const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(text));
     const packed = new Uint8Array(salt.length + iv.length + ct.byteLength);
