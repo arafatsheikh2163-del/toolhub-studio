@@ -12,11 +12,11 @@ export default function CategoryView() {
   return (
     <div className="space-y-8 animate-fade-in">
       <header className="space-y-2">
-        <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Category</div>
-        <h1 className="text-3xl font-medium tracking-tight text-gradient-soft">{meta.label}</h1>
+        <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Category</div>
+        <h1 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em]">{meta.label} tools</h1>
         <p className="text-sm text-muted-foreground">{tools.length} tools · all running locally in your browser.</p>
       </header>
-      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {tools.map(t => <ToolCard key={t.id} tool={t} />)}
       </div>
     </div>
