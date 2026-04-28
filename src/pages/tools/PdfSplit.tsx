@@ -41,7 +41,7 @@ export default function PdfSplit() {
       const out = await PDFDocument.create();
       const pages = await out.copyPages(src, idx);
       pages.forEach(p => out.addPage(p));
-      const blob = new Blob([await out.save()], { type: "application/pdf" });
+      const blob = new Blob([(await out.save()) as BlobPart], { type: "application/pdf" });
       const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `split-${range}.pdf`; a.click();
       toast.success(`Extracted ${idx.length} pages`);
     } catch (e: any) { toast.error(e.message); }

@@ -20,7 +20,7 @@ export default function PdfMerge() {
         const pages = await out.copyPages(src, src.getPageIndices());
         pages.forEach(p => out.addPage(p));
       }
-      const blob = new Blob([await out.save()], { type: "application/pdf" });
+      const blob = new Blob([(await out.save()) as BlobPart], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a"); a.href = url; a.download = "merged.pdf"; a.click();
       URL.revokeObjectURL(url);
