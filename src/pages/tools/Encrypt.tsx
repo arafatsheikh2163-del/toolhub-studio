@@ -12,7 +12,7 @@ const fromB64 = (s: string) => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 
 async function deriveKey(password: string, salt: Uint8Array) {
   const km = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]);
-  return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 200000, hash: "SHA-256" }, km, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt as BufferSource, iterations: 200000, hash: "SHA-256" }, km, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
 }
 
 export default function Encrypt() {
