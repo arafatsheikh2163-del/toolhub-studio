@@ -836,7 +836,8 @@ const productivity: SimpleToolDef[] = [
     fields: [TEXT()],
     run: v => {
       const found = String(v.input ?? "").match(/-?\d+(\.\d+)?/g) ?? [];
-      return [stats([{ k: "Count", v: found.length }, { k: "Sum", v: found.reduce((a, b) => a + Number(b), 0).toFixed(2) }]), txt(found.join("\n"))];
+      const sum = found.reduce<number>((a, b) => a + Number(b), 0);
+      return [stats([{ k: "Count", v: found.length }, { k: "Sum", v: sum.toFixed(2) }]), txt(found.join("\n"))];
     },
   },
   {
