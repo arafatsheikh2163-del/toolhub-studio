@@ -72,6 +72,8 @@ const GradientGen   = lazy(() => import("./pages/tools/GradientGen"));
 const SpeechText    = lazy(() => import("./pages/tools/SpeechText"));
 const Tts           = lazy(() => import("./pages/tools/Tts"));
 
+const SimpleTool    = lazy(() => import("./pages/SimpleToolPage"));
+
 const queryClient = new QueryClient();
 
 const Loader = () => (
@@ -157,6 +159,9 @@ const App = () => (
             <Route path="/tools/gradient-gen"   element={wrap(GradientGen)} />
             <Route path="/tools/speech-text"    element={wrap(SpeechText)} />
             <Route path="/tools/tts"            element={wrap(Tts)} />
+
+            {/* Generic registry-driven tools — see src/data/simpleTools.ts */}
+            <Route path="/t/:id"                element={wrap(SimpleTool)} />
 
             <Route path="*" element={<NotFound />} />
           </Route>

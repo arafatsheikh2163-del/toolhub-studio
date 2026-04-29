@@ -127,6 +127,22 @@ export const TOOLS: Tool[] = [
   { id: "tts",            name: "Text → Speech",      description: "Read text aloud using on-device system voices.",          category: "creative", icon: Volume2,   accent: "mist",  path: "/tools/tts",           keywords: ["speech","voice","tts"], isNew: true },
 ];
 
+/* ------------------------------------------------------------------ *
+ * Merge SIMPLE_TOOLS (registry-driven) into the main TOOLS list      *
+ * so they show up everywhere (dashboard, sidebar, search, category). *
+ * Path goes through /t/:id which is handled by SimpleToolPage.       *
+ * ------------------------------------------------------------------ */
+import { SIMPLE_TOOLS } from "./simpleTools";
+SIMPLE_TOOLS.forEach(s => {
+  TOOLS.push({
+    id: s.id, name: s.name, description: s.description,
+    category: s.category, icon: s.icon,
+    accent: s.accent ?? "stone",
+    path: `/t/${s.id}`,
+    popular: s.popular, isNew: s.isNew, keywords: s.keywords,
+  });
+});
+
 export const getToolById = (id: string) => TOOLS.find(t => t.id === id);
 
 export const POPULAR_TOOLS = TOOLS.filter(t => t.popular);

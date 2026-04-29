@@ -85,42 +85,6 @@
     --sidebar-ring: 20 14% 14%;
   }
 
-  /* Optional dark variant — keep Stone & Ink consistent */
-  .dark {
-    --background: 20 14% 8%;
-    --foreground: 0 0% 98%;
-    --card: 20 14% 11%;
-    --card-foreground: 0 0% 98%;
-    --popover: 20 14% 11%;
-    --popover-foreground: 0 0% 98%;
-    --surface-soft: 20 10% 13%;
-    --surface-warm: 24 10% 15%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 20 14% 8%;
-    --secondary: 20 10% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --accent: 24 10% 18%;
-    --accent-foreground: 0 0% 98%;
-    --muted: 20 10% 15%;
-    --muted-foreground: 30 6% 65%;
-    --border: 30 6% 22%;
-    --input: 20 10% 15%;
-    --ring: 0 0% 98%;
-    --glass-base: 41 37 36 / 0.6;
-    --glass-alt: 41 37 36 / 0.45;
-    --glass-strong: 41 37 36 / 0.85;
-    --glass-border: 255 255 255 / 0.08;
-    --glass-border-strong: 255 255 255 / 0.16;
-    --sidebar-background: 20 14% 8%;
-    --sidebar-foreground: 30 6% 70%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 20 14% 8%;
-    --sidebar-accent: 20 10% 14%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 30 6% 18%;
-    --sidebar-ring: 0 0% 98%;
-  }
-
   * {
     border-color: hsl(var(--border));
   }

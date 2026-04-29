@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Bell, Moon, Sun, Command, PanelLeft } from "lucide-react";
+import { Search, Bell, Command, PanelLeft } from "lucide-react";
 import { TOOLS } from "@/data/tools";
 import { cn } from "@/lib/utils";
 
 export function Topbar({ onToggleSidebar }: { onToggleSidebar?: () => void }) {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -85,14 +84,6 @@ export function Topbar({ onToggleSidebar }: { onToggleSidebar?: () => void }) {
       </div>
 
       <div className="flex-1" />
-
-      <button
-        onClick={() => { document.documentElement.classList.toggle("dark"); setDark(d => !d); }}
-        className="h-9 w-9 grid place-items-center rounded-lg hover:bg-accent text-foreground/80 hover:text-foreground transition-colors focus-ring"
-        aria-label="Toggle theme"
-      >
-        {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-      </button>
 
       <button className="relative h-9 w-9 grid place-items-center rounded-lg hover:bg-accent text-foreground/80 hover:text-foreground transition-colors focus-ring" aria-label="Notifications">
         <Bell className="h-4 w-4" />
