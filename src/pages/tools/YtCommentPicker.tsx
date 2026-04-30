@@ -87,6 +87,7 @@ export default function YtCommentPicker() {
   const [error, setError] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [winners, setWinners] = useState<Comment[]>([]);
+  const [manual, setManual] = useState("");
 
   async function loadComments() {
     setError(""); setWinners([]); setComments([]);
@@ -94,35 +95,14 @@ export default function YtCommentPicker() {
     if (!id) { setError("Could not detect a YouTube video ID. Paste a full video URL."); return; }
     setBusy(true);
     try {
-      // Public no-key reader proxy; returns markdown-ish text of the page incl. visible comments.
       const target = `https://www.youtube.com/watch?v=${id}`;
       const res = await fetch(`https://r.jina.ai/${target}`, { headers: { "x-respond-with": "markdown" } });
       if (!res.ok) throw new Error("Failed to fetch the video page.");
       const text = await res.text();
-
-      // Heuristic: comments appear as "@handle\nComment text" blocks below the description.
-      const lines = text.split(/\r?\n/);
-      const out: Comment[] = [];
-      for (let i = 0; i < lines.length - 1; i++) {
-        const a = lines[i].trim();
-        const b = lines[i + 1]?.trim() ?? "";
-        const m = a.match(/^@([A-Za-z0-9._-]{2,})$/);
-        if (m && b && b.length > 1 && !b.startsWith("@") && !/^\d+\s+(likes?|repl(y|ies))/i.test(b)) {
-          out.push({ author: "@" + m[1], text: b.slice(0, 400) });
-          i++;
-        }
-      }
-
-      // Dedupe by author+text
-      const seen = new Set<string>();
-      const cleaned = out.filter(c => {
-        const k = c.author + "|" + c.text;
-        if (seen.has(k)) return false;
-        seen.add(k); return true;
-      });
+      const cleaned = parseJinaComments(text);
 
       if (cleaned.length === 0) {
-        setError("No comments could be extracted. The video may have comments disabled, or YouTube didn't return them in this fetch. Try again.");
+        setError("Auto fetch could not read comments for this video. Paste exported/copied comments below and pick winners instantly.");
       }
       setComments(cleaned);
     } catch (e: any) {
@@ -130,6 +110,13 @@ export default function YtCommentPicker() {
     } finally {
       setBusy(false);
     }
+  }
+
+  function loadManual() {
+    const parsed = parsePastedComments(manual);
+    setError(parsed.length ? "" : "Paste one comment per line, or @user: comment format.");
+    setComments(parsed);
+    setWinners([]);
   }
 
   function pick() {
