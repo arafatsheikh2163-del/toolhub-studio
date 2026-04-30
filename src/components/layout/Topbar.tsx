@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Bell, Command, PanelLeft } from "lucide-react";
+import { Search, Command, PanelLeft } from "lucide-react";
 import { TOOLS } from "@/data/tools";
 import { cn } from "@/lib/utils";
 
@@ -84,18 +84,6 @@ export function Topbar({ onToggleSidebar }: { onToggleSidebar?: () => void }) {
       </div>
 
       <div className="flex-1" />
-
-      <button className="relative h-9 w-9 grid place-items-center rounded-lg hover:bg-accent text-foreground/80 hover:text-foreground transition-colors focus-ring" aria-label="Notifications">
-        <Bell className="h-4 w-4" />
-        <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-foreground" />
-      </button>
-
-      <button
-        className="relative h-9 w-9 grid place-items-center rounded-full text-xs font-bold focus-ring bg-foreground text-background"
-        title="Account"
-      >
-        TH
-      </button>
     </header>
   );
 }

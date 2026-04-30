@@ -46,13 +46,12 @@ export default function Dashboard() {
   return (
     <div className="space-y-12">
       {/* Hero — clean editorial */}
-      <section className="space-y-6">
-        <div className="text-[12px] font-semibold uppercase tracking-wider text-muted-foreground">Arafat's Workspace</div>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-[-0.04em] text-balance leading-[1.02]">
-          Good day, Arafat
+      <section className="space-y-5">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-[-0.04em] text-balance leading-[1.05]">
+          A quiet workspace for everyday tools.
         </h1>
-        <p className="text-base text-muted-foreground max-w-2xl">
-          {TOOLS.length} precision tools for text, images, code, PDFs and creative work — all running locally in your browser.
+        <p className="text-sm text-muted-foreground max-w-xl">
+          {TOOLS.length} precision utilities — text, images, code, PDFs — all running locally in your browser.
         </p>
 
         {/* Search */}
