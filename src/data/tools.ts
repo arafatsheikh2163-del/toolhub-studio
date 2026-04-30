@@ -8,7 +8,7 @@ import {
   Fingerprint, Shuffle, Calculator, Clock, Globe,
   Regex, ShieldCheck, GitCompare, FileCode2, FileJson, Table2, Sigma, Database, Eye, Lock,
   Palette, Layers, Shapes, Mic, Volume2, Camera, Timer, NotebookPen, StickyNote, Image as ImageIcon,
-  Eraser as EraserIcon, Youtube, Wand2,
+  Youtube, Wand2, Sparkles,
   type LucideIcon,
 } from "lucide-react";
 
@@ -69,7 +69,7 @@ export const TOOLS: Tool[] = [
   { id: "image-rotate",   name: "Rotate & Flip",      description: "Rotate by degree or flip across either axis.",           category: "image", icon: RotateCw,     accent: "olive", path: "/tools/image-rotate",   keywords: ["rotate","flip"] },
   { id: "image-watermark",name: "Watermark Studio",   description: "Add custom text watermarks with opacity & position.",    category: "image", icon: Droplet,      accent: "ink",   path: "/tools/image-watermark",keywords: ["watermark","brand"], isNew: true },
   { id: "webcam-capture", name: "Webcam Capture",     description: "Snap high-resolution photos straight from your camera.", category: "image", icon: Camera,       accent: "stone", path: "/tools/webcam-capture", keywords: ["webcam","photo","camera"], isNew: true },
-  { id: "bg-remove",      name: "Background Remover", description: "Remove solid backgrounds from photos — runs locally, no upload.", category: "image", icon: EraserIcon, accent: "ink", path: "/tools/bg-remove", keywords: ["background","remove","cutout","transparent","png"], isNew: true, popular: true },
+  { id: "bg-remove",      name: "Background Remover", description: "Remove solid backgrounds from photos — runs locally, no upload.", category: "image", icon: Sparkles, accent: "ink", path: "/tools/bg-remove", keywords: ["background","remove","cutout","transparent","png"], isNew: true, popular: true },
 
   // ===== Developer =====
   { id: "json-format",    name: "JSON Formatter",     description: "Pretty-print, validate, and minify JSON payloads.",      category: "developer", icon: Braces,    accent: "ink",   path: "/tools/json-format",  keywords: ["json","format","lint"], popular: true },
