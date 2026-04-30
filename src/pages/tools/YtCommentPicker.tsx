@@ -155,6 +155,15 @@ export default function YtCommentPicker() {
         </div>
       </div>
 
+      <div className="mt-5 rounded-2xl surface-soft p-4 space-y-3">
+        <Field label="Fallback: paste comments manually" hint="one per line">
+          <TextArea rows={5} value={manual} onChange={(e) => setManual(e.target.value)} placeholder="@user: Great video!&#10;@another: Count me in" />
+        </Field>
+        <button onClick={loadManual} disabled={!manual.trim()} className="btn-3d-light text-xs !px-3.5 !py-2 disabled:opacity-50">
+          <ClipboardPaste className="h-3.5 w-3.5" /> Use pasted comments
+        </button>
+      </div>
+
       {error && <div className="mt-4 rounded-lg border border-destructive/30 bg-destructive/5 text-destructive text-xs px-3 py-2">{error}</div>}
 
       {comments.length > 0 && (
@@ -184,9 +193,7 @@ export default function YtCommentPicker() {
         </div>
       )}
 
-      <p className="text-[11px] text-muted-foreground mt-6">
-        Note: runs entirely in-browser with no API key. Uses a public read-only fetch proxy and may return only the comments YouTube initially renders for the page (typically the top 20–50). Disabled comments cannot be retrieved.
-      </p>
+      <p className="text-[11px] text-muted-foreground mt-6">No API key. Auto mode reads publicly rendered comments when YouTube exposes them; manual paste guarantees the picker still works for restricted videos.</p>
     </ToolWorkspace>
   );
 }
