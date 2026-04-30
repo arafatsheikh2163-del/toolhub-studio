@@ -1,13 +1,69 @@
 import { useState } from "react";
 import { ToolWorkspace } from "@/components/tools/ToolWorkspace";
-import { Field, TextInput, Stat } from "@/components/tools/Field";
-import { Shuffle, Loader2 } from "lucide-react";
-
-// Random YouTube comment picker — no API key. Uses the public youtube.com timed-text style fetch
-// is not available, so we use the public scraping endpoint via a CORS-friendly proxy.
-// We rely on r.jina.ai as a public read-only fetcher (no auth) to grab the comments JSON-ish blob.
+import { Field, TextInput, TextArea, Stat } from "@/components/tools/Field";
+import { Shuffle, Loader2, ClipboardPaste } from "lucide-react";
 
 interface Comment { author: string; text: string; }
+
+const SYSTEM_LINES = /^(Show less|Read more|Show more|Like|Dislike|Reply|Hide replies|Sort by|Top|Newest|Add a comment|Pinned by|Comments|Transcript|Description)$/i;
+
+function stripMarkdown(input: string) {
+  const cleaned = input
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/Show less Read more|Show less|Read more/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const box = document.createElement("textarea");
+  box.innerHTML = cleaned;
+  return box.value.trim();
+}
+
+function parseJinaComments(markdown: string): Comment[] {
+  const out: Comment[] = [];
+  const re = /### \[@([^\]]+)\]\([^)]*\)([\s\S]*?)(?=\n\n### \[@|$)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(markdown))) {
+    const author = `@${m[1].trim()}`;
+    const rawLines = m[2].split(/\r?\n/).map(l => l.trim());
+    const dateIndex = rawLines.findIndex(l => /\bago\]\(|\bago$|\bminutes? ago|\bhours? ago|\bdays? ago|\bweeks? ago|\bmonths? ago|\byears? ago/i.test(l));
+    if (dateIndex < 0) continue;
+
+    const body: string[] = [];
+    for (const line of rawLines.slice(dateIndex + 1)) {
+      const cleaned = stripMarkdown(line);
+      if (!cleaned) continue;
+      if (cleaned === author || cleaned.includes(`${author} ${author}`)) continue;
+      if (SYSTEM_LINES.test(cleaned) || /^\d+$/.test(cleaned) || /^\d+\s+repl(y|ies)$/i.test(cleaned)) break;
+      if (/^Image \d+/i.test(cleaned)) continue;
+      body.push(cleaned);
+      if (body.join(" ").length > 500) break;
+    }
+
+    const text = body.join(" ").replace(/\s{2,}/g, " ").slice(0, 500).trim();
+    if (text.length > 1) out.push({ author, text });
+  }
+  return dedupe(out);
+}
+
+function parsePastedComments(text: string): Comment[] {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const out = lines.map((line, i) => {
+    const m = line.match(/^(@[\p{L}\p{N}._-]+)\s*[:：-]\s*(.+)$/u);
+    return m ? { author: m[1], text: m[2].slice(0, 500) } : { author: `Entry ${i + 1}`, text: line.slice(0, 500) };
+  });
+  return dedupe(out);
+}
+
+function dedupe(list: Comment[]) {
+  const seen = new Set<string>();
+  return list.filter(c => {
+    const k = `${c.author}|${c.text}`.toLowerCase();
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
 
 function extractVideoId(input: string): string | null {
   const s = input.trim();
@@ -31,6 +87,7 @@ export default function YtCommentPicker() {
   const [error, setError] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [winners, setWinners] = useState<Comment[]>([]);
+  const [manual, setManual] = useState("");
 
   async function loadComments() {
     setError(""); setWinners([]); setComments([]);
@@ -38,35 +95,14 @@ export default function YtCommentPicker() {
     if (!id) { setError("Could not detect a YouTube video ID. Paste a full video URL."); return; }
     setBusy(true);
     try {
-      // Public no-key reader proxy; returns markdown-ish text of the page incl. visible comments.
       const target = `https://www.youtube.com/watch?v=${id}`;
       const res = await fetch(`https://r.jina.ai/${target}`, { headers: { "x-respond-with": "markdown" } });
       if (!res.ok) throw new Error("Failed to fetch the video page.");
       const text = await res.text();
-
-      // Heuristic: comments appear as "@handle\nComment text" blocks below the description.
-      const lines = text.split(/\r?\n/);
-      const out: Comment[] = [];
-      for (let i = 0; i < lines.length - 1; i++) {
-        const a = lines[i].trim();
-        const b = lines[i + 1]?.trim() ?? "";
-        const m = a.match(/^@([A-Za-z0-9._-]{2,})$/);
-        if (m && b && b.length > 1 && !b.startsWith("@") && !/^\d+\s+(likes?|repl(y|ies))/i.test(b)) {
-          out.push({ author: "@" + m[1], text: b.slice(0, 400) });
-          i++;
-        }
-      }
-
-      // Dedupe by author+text
-      const seen = new Set<string>();
-      const cleaned = out.filter(c => {
-        const k = c.author + "|" + c.text;
-        if (seen.has(k)) return false;
-        seen.add(k); return true;
-      });
+      const cleaned = parseJinaComments(text);
 
       if (cleaned.length === 0) {
-        setError("No comments could be extracted. The video may have comments disabled, or YouTube didn't return them in this fetch. Try again.");
+        setError("Auto fetch could not read comments for this video. Paste exported/copied comments below and pick winners instantly.");
       }
       setComments(cleaned);
     } catch (e: any) {
@@ -74,6 +110,13 @@ export default function YtCommentPicker() {
     } finally {
       setBusy(false);
     }
+  }
+
+  function loadManual() {
+    const parsed = parsePastedComments(manual);
+    setError(parsed.length ? "" : "Paste one comment per line, or @user: comment format.");
+    setComments(parsed);
+    setWinners([]);
   }
 
   function pick() {
@@ -112,6 +155,15 @@ export default function YtCommentPicker() {
         </div>
       </div>
 
+      <div className="mt-5 rounded-2xl surface-soft p-4 space-y-3">
+        <Field label="Fallback: paste comments manually" hint="one per line">
+          <TextArea rows={5} value={manual} onChange={(e) => setManual(e.target.value)} placeholder="@user: Great video!&#10;@another: Count me in" />
+        </Field>
+        <button onClick={loadManual} disabled={!manual.trim()} className="btn-3d-light text-xs !px-3.5 !py-2 disabled:opacity-50">
+          <ClipboardPaste className="h-3.5 w-3.5" /> Use pasted comments
+        </button>
+      </div>
+
       {error && <div className="mt-4 rounded-lg border border-destructive/30 bg-destructive/5 text-destructive text-xs px-3 py-2">{error}</div>}
 
       {comments.length > 0 && (
@@ -141,9 +193,7 @@ export default function YtCommentPicker() {
         </div>
       )}
 
-      <p className="text-[11px] text-muted-foreground mt-6">
-        Note: runs entirely in-browser with no API key. Uses a public read-only fetch proxy and may return only the comments YouTube initially renders for the page (typically the top 20–50). Disabled comments cannot be retrieved.
-      </p>
+      <p className="text-[11px] text-muted-foreground mt-6">No API key. Auto mode reads publicly rendered comments when YouTube exposes them; manual paste guarantees the picker still works for restricted videos.</p>
     </ToolWorkspace>
   );
 }
