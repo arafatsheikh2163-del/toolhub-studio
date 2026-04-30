@@ -22,6 +22,9 @@ const ImageRotate   = lazy(() => import("./pages/tools/ImageRotate"));
 const ImageCrop     = lazy(() => import("./pages/tools/ImageCrop"));
 const ImageWatermark= lazy(() => import("./pages/tools/ImageWatermark"));
 const WebcamCapture = lazy(() => import("./pages/tools/WebcamCapture"));
+const BgRemove      = lazy(() => import("./pages/tools/BgRemove"));
+const YtCommentPicker = lazy(() => import("./pages/tools/YtCommentPicker"));
+const CodeTranslate = lazy(() => import("./pages/tools/CodeTranslate"));
 
 const JsonFormat    = lazy(() => import("./pages/tools/JsonFormat"));
 const Base64Tool    = lazy(() => import("./pages/tools/Base64"));
@@ -110,6 +113,9 @@ const App = () => (
             <Route path="/tools/image-crop"     element={wrap(ImageCrop)} />
             <Route path="/tools/image-watermark"element={wrap(ImageWatermark)} />
             <Route path="/tools/webcam-capture" element={wrap(WebcamCapture)} />
+            <Route path="/tools/bg-remove"      element={wrap(BgRemove)} />
+            <Route path="/tools/yt-comment-picker" element={wrap(YtCommentPicker)} />
+            <Route path="/tools/code-translate" element={wrap(CodeTranslate)} />
 
             <Route path="/tools/json-format"    element={wrap(JsonFormat)} />
             <Route path="/tools/base64"         element={wrap(Base64Tool)} />

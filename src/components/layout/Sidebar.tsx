@@ -48,19 +48,6 @@ export function Sidebar({ collapsed, onToggle }: Props) {
         )}
       </div>
 
-      {/* Workspace switcher (à la ElevenLabs) */}
-      {!collapsed && (
-        <div className="px-3 pt-3">
-          <button className="w-full flex items-center gap-2.5 h-11 px-2.5 rounded-lg surface-soft hover:bg-accent transition-colors">
-            <div className="h-7 w-7 rounded-md bg-[#f97316] grid place-items-center text-white text-xs font-bold shrink-0">A</div>
-            <div className="flex-1 min-w-0 text-left">
-              <div className="text-sm font-medium truncate">Personal</div>
-            </div>
-            <ChevronLeft className="h-3.5 w-3.5 -rotate-90 text-muted-foreground" />
-          </button>
-        </div>
-      )}
-
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-5">
         <ul className="space-y-0.5">
