@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import removeBackground, { preload, type Config } from "@imgly/background-removal";
+import { preload, removeBackground, type Config } from "@imgly/background-removal";
 import { Download, Loader2, RotateCcw, Sparkles } from "lucide-react";
 import { ToolWorkspace } from "@/components/tools/ToolWorkspace";
 import { Dropzone } from "@/components/tools/Dropzone";
@@ -7,7 +7,7 @@ import { Dropzone } from "@/components/tools/Dropzone";
 const CONFIG: Config = {
   model: "isnet_quint8",
   device: "cpu",
-  output: { format: "image/png", type: "foreground", quality: 1 },
+  output: { format: "image/png", quality: 1 },
 };
 
 export default function BgRemove() {
