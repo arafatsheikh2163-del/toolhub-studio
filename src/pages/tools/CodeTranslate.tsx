@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ToolWorkspace } from "@/components/tools/ToolWorkspace";
 import { Field, TextArea } from "@/components/tools/Field";
 import { Wand2, Loader2, Copy, Check } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const LANGS = [
   "Python", "JavaScript", "TypeScript", "Java", "C", "C++", "C#",
@@ -20,27 +21,12 @@ export default function CodeTranslate() {
   async function generate() {
     setErr(""); setOut(""); setBusy(true);
     try {
-      const sys = `You are an expert programmer. Convert the user's natural-language description into clean, idiomatic ${lang} code. Reply with ONLY a single fenced code block — no explanation, no prose. Use modern best practices and include necessary imports.`;
-      const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
-          messages: [
-            { role: "system", content: sys },
-            { role: "user", content: prompt },
-          ],
-        }),
+      const { data, error } = await supabase.functions.invoke("code-translate", {
+        body: { prompt, lang },
       });
-      if (res.status === 429) throw new Error("Rate limit reached. Please try again in a moment.");
-      if (res.status === 402) throw new Error("AI credits exhausted. Add credits in Lovable settings.");
-      if (!res.ok) throw new Error(`Generation failed (${res.status}).`);
-      const data = await res.json();
-      let text: string = data?.choices?.[0]?.message?.content ?? "";
-      // strip ``` fences
-      const m = text.match(/```[a-zA-Z+#-]*\n([\s\S]*?)```/);
-      if (m) text = m[1];
-      setOut(text.trim());
+      if (error) throw new Error(error.message || "Generation failed.");
+      if (data?.error) throw new Error(data.error);
+      setOut((data?.code ?? "").trim());
     } catch (e: any) {
       setErr(e?.message || "Failed to generate.");
     } finally {
