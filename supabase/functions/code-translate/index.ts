@@ -2,7 +2,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 Deno.serve(async (req) => {
@@ -12,7 +12,8 @@ Deno.serve(async (req) => {
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
     const { prompt, lang } = await req.json();
-    if (!prompt || !lang) throw new Error("Missing prompt or lang");
+    if (typeof prompt !== "string" || prompt.trim().length < 2) throw new Error("Write at least 2 characters describing the code.");
+    if (typeof lang !== "string" || lang.trim().length < 1) throw new Error("Choose a programming language.");
 
     const sys = `You are an expert programmer. Convert the user's natural-language description into clean, idiomatic ${lang} code. Reply with ONLY a single fenced code block — no explanation, no prose. Use modern best practices and include necessary imports.`;
 
@@ -21,7 +22,7 @@ Deno.serve(async (req) => {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${LOVABLE_API_KEY}` },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
-        messages: [{ role: "system", content: sys }, { role: "user", content: prompt }],
+        messages: [{ role: "system", content: sys }, { role: "user", content: prompt.trim().slice(0, 6000) }],
       }),
     });
 
