@@ -8,6 +8,7 @@ import {
   Fingerprint, Shuffle, Calculator, Clock, Globe,
   Regex, ShieldCheck, GitCompare, FileCode2, FileJson, Table2, Sigma, Database, Eye, Lock,
   Palette, Layers, Shapes, Mic, Volume2, Camera, Timer, NotebookPen, StickyNote, Image as ImageIcon,
+  Eraser as EraserIcon, Youtube, Wand2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -68,6 +69,7 @@ export const TOOLS: Tool[] = [
   { id: "image-rotate",   name: "Rotate & Flip",      description: "Rotate by degree or flip across either axis.",           category: "image", icon: RotateCw,     accent: "olive", path: "/tools/image-rotate",   keywords: ["rotate","flip"] },
   { id: "image-watermark",name: "Watermark Studio",   description: "Add custom text watermarks with opacity & position.",    category: "image", icon: Droplet,      accent: "ink",   path: "/tools/image-watermark",keywords: ["watermark","brand"], isNew: true },
   { id: "webcam-capture", name: "Webcam Capture",     description: "Snap high-resolution photos straight from your camera.", category: "image", icon: Camera,       accent: "stone", path: "/tools/webcam-capture", keywords: ["webcam","photo","camera"], isNew: true },
+  { id: "bg-remove",      name: "Background Remover", description: "Remove solid backgrounds from photos — runs locally, no upload.", category: "image", icon: EraserIcon, accent: "ink", path: "/tools/bg-remove", keywords: ["background","remove","cutout","transparent","png"], isNew: true, popular: true },
 
   // ===== Developer =====
   { id: "json-format",    name: "JSON Formatter",     description: "Pretty-print, validate, and minify JSON payloads.",      category: "developer", icon: Braces,    accent: "ink",   path: "/tools/json-format",  keywords: ["json","format","lint"], popular: true },
@@ -125,6 +127,8 @@ export const TOOLS: Tool[] = [
   { id: "gradient-gen",   name: "Gradient Generator", description: "Build linear / radial / conic gradients with live CSS.",  category: "creative", icon: Layers,    accent: "ink",   path: "/tools/gradient-gen",  keywords: ["gradient","css"], isNew: true },
   { id: "speech-text",    name: "Speech → Text",      description: "Live speech recognition using your browser microphone.",  category: "creative", icon: Mic,       accent: "sand",  path: "/tools/speech-text",   keywords: ["speech","voice"] },
   { id: "tts",            name: "Text → Speech",      description: "Read text aloud using on-device system voices.",          category: "creative", icon: Volume2,   accent: "mist",  path: "/tools/tts",           keywords: ["speech","voice","tts"], isNew: true },
+  { id: "yt-comment-picker", name: "YT Comment Picker", description: "Random winner picker from any public YouTube video — no API key.", category: "utility", icon: Youtube, accent: "ink", path: "/tools/yt-comment-picker", keywords: ["youtube","giveaway","random","comment","winner"], isNew: true, popular: true },
+  { id: "code-translate",    name: "Plain → Code",      description: "Describe in any language — get clean code in 22+ programming languages.", category: "developer", icon: Wand2, accent: "ink", path: "/tools/code-translate", keywords: ["ai","code","generator","translate","programming","natural language"], isNew: true, popular: true },
 ];
 
 /* ------------------------------------------------------------------ *
