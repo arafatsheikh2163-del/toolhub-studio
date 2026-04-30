@@ -1,13 +1,69 @@
 import { useState } from "react";
 import { ToolWorkspace } from "@/components/tools/ToolWorkspace";
-import { Field, TextInput, Stat } from "@/components/tools/Field";
-import { Shuffle, Loader2 } from "lucide-react";
-
-// Random YouTube comment picker — no API key. Uses the public youtube.com timed-text style fetch
-// is not available, so we use the public scraping endpoint via a CORS-friendly proxy.
-// We rely on r.jina.ai as a public read-only fetcher (no auth) to grab the comments JSON-ish blob.
+import { Field, TextInput, TextArea, Stat } from "@/components/tools/Field";
+import { Shuffle, Loader2, ClipboardPaste } from "lucide-react";
 
 interface Comment { author: string; text: string; }
+
+const SYSTEM_LINES = /^(Show less|Read more|Show more|Like|Dislike|Reply|Hide replies|Sort by|Top|Newest|Add a comment|Pinned by|Comments|Transcript|Description)$/i;
+
+function stripMarkdown(input: string) {
+  const cleaned = input
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/Show less Read more|Show less|Read more/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const box = document.createElement("textarea");
+  box.innerHTML = cleaned;
+  return box.value.trim();
+}
+
+function parseJinaComments(markdown: string): Comment[] {
+  const out: Comment[] = [];
+  const re = /### \[@([^\]]+)\]\([^)]*\)([\s\S]*?)(?=\n\n### \[@|$)/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(markdown))) {
+    const author = `@${m[1].trim()}`;
+    const rawLines = m[2].split(/\r?\n/).map(l => l.trim());
+    const dateIndex = rawLines.findIndex(l => /\bago\]\(|\bago$|\bminutes? ago|\bhours? ago|\bdays? ago|\bweeks? ago|\bmonths? ago|\byears? ago/i.test(l));
+    if (dateIndex < 0) continue;
+
+    const body: string[] = [];
+    for (const line of rawLines.slice(dateIndex + 1)) {
+      const cleaned = stripMarkdown(line);
+      if (!cleaned) continue;
+      if (cleaned === author || cleaned.includes(`${author} ${author}`)) continue;
+      if (SYSTEM_LINES.test(cleaned) || /^\d+$/.test(cleaned) || /^\d+\s+repl(y|ies)$/i.test(cleaned)) break;
+      if (/^Image \d+/i.test(cleaned)) continue;
+      body.push(cleaned);
+      if (body.join(" ").length > 500) break;
+    }
+
+    const text = body.join(" ").replace(/\s{2,}/g, " ").slice(0, 500).trim();
+    if (text.length > 1) out.push({ author, text });
+  }
+  return dedupe(out);
+}
+
+function parsePastedComments(text: string): Comment[] {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const out = lines.map((line, i) => {
+    const m = line.match(/^(@[\p{L}\p{N}._-]+)\s*[:：-]\s*(.+)$/u);
+    return m ? { author: m[1], text: m[2].slice(0, 500) } : { author: `Entry ${i + 1}`, text: line.slice(0, 500) };
+  });
+  return dedupe(out);
+}
+
+function dedupe(list: Comment[]) {
+  const seen = new Set<string>();
+  return list.filter(c => {
+    const k = `${c.author}|${c.text}`.toLowerCase();
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
 
 function extractVideoId(input: string): string | null {
   const s = input.trim();
