@@ -4,7 +4,6 @@ import { RefreshCw, X, Plus, GripVertical, AlertTriangle, ExternalLink, ShieldAl
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { ToolGuide } from "@/components/tools/ToolGuide";
 
 interface Tab { id: string; url: string; key: number; }
 
@@ -156,8 +155,6 @@ export default function MultiTab() {
           <span>Some sites (Google, GitHub, banks) block iframe embedding. We auto-detect and offer a clear "Open in new tab" button for those.</span>
         </div>
       </div>
-
-      <ToolGuide toolId="multi-tab" />
     </ToolWorkspace>
   );
 }

@@ -4,7 +4,6 @@ import { Field, TextArea } from "@/components/tools/Field";
 import { Wand2, Loader2, Copy, Check, Download, Eye, Code as CodeIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import { ToolGuide } from "@/components/tools/ToolGuide";
 
 const LANGS = [
   "HTML", "CSS", "JavaScript", "TypeScript", "Python", "React (JSX)", "Vue",
@@ -143,8 +142,6 @@ export default function CodeTranslate() {
           </AnimatePresence>
         </div>
       </div>
-
-      <ToolGuide toolId="code-translate" />
     </ToolWorkspace>
   );
 }
