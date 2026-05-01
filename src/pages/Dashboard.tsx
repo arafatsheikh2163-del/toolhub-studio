@@ -162,7 +162,9 @@ function FlagshipCard() {
           <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" /> Flagship
           </div>
-          <h3 className="text-2xl font-semibold tracking-tight">Multi-tab Viewer — compare any sites side-by-side.</h3>
+          <h3 className="font-display text-3xl tracking-[-0.035em] leading-[1.05]">
+            Multi-tab Viewer — <em className="not-italic editorial-underline">compare</em> any sites, side-by-side.
+          </h3>
           <p className="text-sm text-muted-foreground">Drop in URLs, switch grid layouts (1×1 → 4×4), refresh individually.</p>
         </div>
         <span className="btn-3d shrink-0 group-hover:-translate-y-1 transition-transform">Open Viewer →</span>
