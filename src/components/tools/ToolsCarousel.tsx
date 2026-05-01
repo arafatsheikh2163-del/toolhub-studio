@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { ACCENT_BG, type Tool } from "@/data/tools";
 import { cn } from "@/lib/utils";
 
@@ -8,9 +9,12 @@ interface Props {
   title: string;
   subtitle?: string;
   tools: Tool[];
+  /** Auto-slide marquee mode (continuously scrolls). */
+  marquee?: boolean;
 }
 
-export function ToolsCarousel({ title, subtitle, tools }: Props) {
+export function ToolsCarousel({ title, subtitle, tools, marquee = false }: Props) {
+  if (marquee) return <MarqueeCarousel title={title} subtitle={subtitle} tools={tools} />;
   const ref = useRef<HTMLDivElement>(null);
   const [canL, setCanL] = useState(false);
   const [canR, setCanR] = useState(true);
@@ -35,7 +39,13 @@ export function ToolsCarousel({ title, subtitle, tools }: Props) {
   };
 
   return (
-    <section className="space-y-4">
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="space-y-4"
+    >
       <div className="flex items-end justify-between gap-4">
         <div>
           <h2 className="text-xl sm:text-2xl font-semibold tracking-tight">{title}</h2>
@@ -60,7 +70,38 @@ export function ToolsCarousel({ title, subtitle, tools }: Props) {
           {tools.map(t => <CarouselTile key={t.id} tool={t} />)}
         </div>
       </div>
-    </section>
+    </motion.section>
+  );
+}
+
+function MarqueeCarousel({ title, subtitle, tools }: Omit<Props, "marquee">) {
+  // Duplicate the list so the loop is seamless.
+  const loop = [...tools, ...tools];
+  const dur = Math.max(28, tools.length * 4);
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="space-y-4"
+    >
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight">{title}</h2>
+          {subtitle && <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>}
+        </div>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">Live · auto-rotate</span>
+      </div>
+      <div className="marquee-mask group relative overflow-hidden -mx-1">
+        <div
+          className="flex gap-4 px-1 will-change-transform group-hover:[animation-play-state:paused]"
+          style={{ animation: `marquee-x ${dur}s linear infinite`, width: "max-content" }}
+        >
+          {loop.map((t, i) => <CarouselTile key={`${t.id}-${i}`} tool={t} />)}
+        </div>
+      </div>
+    </motion.section>
   );
 }
 
