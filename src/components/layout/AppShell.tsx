@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 
@@ -21,11 +22,28 @@ export function AppShell() {
       <div className="relative flex-1 flex flex-col min-w-0">
         <Topbar onToggleSidebar={() => setCollapsed(c => !c)} />
         <main className="flex-1 overflow-y-auto">
-          <div className="px-5 sm:px-8 py-8 max-w-[1500px] mx-auto w-full animate-fade-in">
-            <Outlet />
-          </div>
+          <PageTransition />
         </main>
       </div>
+    </div>
+  );
+}
+
+function PageTransition() {
+  const loc = useLocation();
+  return (
+    <div className="px-5 sm:px-8 py-8 max-w-[1500px] mx-auto w-full">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={loc.pathname}
+          initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <Outlet />
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }

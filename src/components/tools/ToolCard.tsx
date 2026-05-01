@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Star } from "lucide-react";
+import { motion } from "framer-motion";
 import { ACCENT_BG, type Tool } from "@/data/tools";
 import { useFavorites } from "@/hooks/useFavorites";
 import { cn } from "@/lib/utils";
@@ -12,10 +13,16 @@ export function ToolCard({ tool, compact }: { tool: Tool; compact?: boolean }) {
   const isInk = accent === "ink";
 
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+    >
     <Link
       to={tool.path}
       className={cn(
-        "group relative flex flex-col gap-4 p-5 card-soft overflow-hidden",
+        "group relative flex flex-col gap-4 p-5 card-soft overflow-hidden h-full",
         compact && "p-4 gap-3"
       )}
     >
@@ -49,5 +56,6 @@ export function ToolCard({ tool, compact }: { tool: Tool; compact?: boolean }) {
         <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
       </div>
     </Link>
+    </motion.div>
   );
 }

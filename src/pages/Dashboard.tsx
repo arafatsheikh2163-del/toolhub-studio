@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Search, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import { TOOLS, NEW_TOOLS, POPULAR_TOOLS, type ToolCategory } from "@/data/tools";
 import { ToolCard } from "@/components/tools/ToolCard";
 import { ToolsCarousel } from "@/components/tools/ToolsCarousel";
@@ -45,18 +46,43 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-12">
-      {/* Hero — clean editorial */}
-      <section className="space-y-5">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-[-0.04em] text-balance leading-[1.05]">
-          A quiet workspace for everyday tools.
-        </h1>
-        <p className="text-sm text-muted-foreground max-w-xl">
-          {TOOLS.length} precision utilities — text, images, code, PDFs — all running locally in your browser.
-        </p>
+      {/* Editorial Hero */}
+      <motion.section
+        initial="hidden" animate="show"
+        variants={{ show: { transition: { staggerChildren: 0.08 } } }}
+        className="pt-2"
+      >
+        <motion.div
+          variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }}
+          className="inline-flex items-center gap-2 rounded-full surface-soft border border-border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-foreground animate-pulse" />
+          {TOOLS.length} crafted utilities
+        </motion.div>
+
+        <motion.h1
+          variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="font-display mt-5 text-[clamp(2.4rem,6.5vw,5rem)] leading-[0.95] tracking-[-0.045em] text-balance"
+        >
+          A <em className="not-italic text-shimmer">quiet</em> workspace
+          <br />
+          for <span className="editorial-underline">everyday</span> tools.
+        </motion.h1>
+
+        <motion.p
+          variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+          className="mt-5 text-base text-muted-foreground max-w-xl text-pretty leading-relaxed"
+        >
+          Text, images, code, PDFs — every tool runs locally in your browser. No accounts. No uploads.
+        </motion.p>
 
         {/* Search */}
-        <div className="relative max-w-2xl">
-          <div className="flex items-center h-12 rounded-xl bg-card border border-border px-4 gap-3 shadow-sm focus-within:ring-2 focus-within:ring-foreground/15">
+        <motion.div
+          variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}
+          className="relative max-w-2xl mt-7"
+        >
+          <div className="flex items-center h-12 rounded-xl bg-card border border-border px-4 gap-3 shadow-sm focus-within:ring-2 focus-within:ring-foreground/15 transition-shadow">
             <Search className="h-4 w-4 text-muted-foreground" />
             <input
               value={q}
@@ -66,11 +92,11 @@ export default function Dashboard() {
             />
             {q && <button onClick={() => setQ("")} className="text-[11px] text-muted-foreground hover:text-foreground">Clear</button>}
           </div>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
-      {/* Featured carousel — ElevenLabs style */}
-      {!q && <ToolsCarousel title="Featured tools" subtitle="Hand-picked workflows used most this week" tools={featured} />}
+      {/* Featured marquee — auto-sliding */}
+      {!q && <ToolsCarousel marquee title="Featured tools" subtitle="Hand-picked workflows — hover to pause" tools={featured} />}
 
       {/* New row */}
       {!q && NEW_TOOLS.length > 0 && (
@@ -136,7 +162,9 @@ function FlagshipCard() {
           <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             <Sparkles className="h-3.5 w-3.5" /> Flagship
           </div>
-          <h3 className="text-2xl font-semibold tracking-tight">Multi-tab Viewer — compare any sites side-by-side.</h3>
+          <h3 className="font-display text-3xl tracking-[-0.035em] leading-[1.05]">
+            Multi-tab Viewer — <em className="not-italic editorial-underline">compare</em> any sites, side-by-side.
+          </h3>
           <p className="text-sm text-muted-foreground">Drop in URLs, switch grid layouts (1×1 → 4×4), refresh individually.</p>
         </div>
         <span className="btn-3d shrink-0 group-hover:-translate-y-1 transition-transform">Open Viewer →</span>
